@@ -1,7 +1,13 @@
+const displayComments = async (answerId, index) => {
+    const response = await fetch(`/getComments/${answerId}`);
+    const data = await response.json();
+    console.log(data);
+}
 (async () => {
     await displayAnswers();
     const commentBtns = document.querySelectorAll(".comment");
     const commentInputs = document.querySelectorAll(".comment-input");
+    const displayCommentBtns = document.querySelectorAll(".show-replies");
     commentBtns.forEach((commentBtn, index) => {
         commentBtn.addEventListener("click", async (e) => {
             const answerId = e.target.getAttribute('data-id')
@@ -27,6 +33,12 @@
                 })
             }
 
+        })
+    })
+    displayCommentBtns.forEach((btn, index) => {
+        btn.addEventListener('click', e => {
+            const answerId = e.target.getAttribute('data-id');
+            displayComments(answerId, index);
         })
     })
 })();

@@ -7,7 +7,7 @@ const displayAnswers = async () => {
     const data = await request.json();
     console.log(data)
 
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
         if (data.success) {
             let str = ``;
             if (data.data.length > 0) {
@@ -16,11 +16,11 @@ const displayAnswers = async () => {
                             <div class="answer">
                                 <h3>${answer.user}</h3> <span>${findTimeElapsed(answer.date)} ago</span>
                                 <p>${answer.text}</p>
-                                <button class="btn hover-effect">Show Replies</button>
+                                <button class="show-replies btn hover-effect" data-id="${answer._id}">Show Replies</button>
                             </div>
-                            <div class="comments container">
+                            <div class="comments container hide">
                                 <input id=${answer._id} class="comment-input" placeholder="Enter comment">
-                                <button class="comment" data-id=${answer._id}>Post</button>
+                                <button class="comment" data-id=${answer._id}>Post</button><br>
                             </div>
                             `
                 })
@@ -29,7 +29,7 @@ const displayAnswers = async () => {
             }
             answersDiv.innerHTML = str;
             resolve();
-        } else { answersDiv.innerHTML = `<h2>${data.data.error}</h2>` ; reject() }
+        } else { answersDiv.innerHTML = `<h2>${data.data.error}</h2>`; reject() }
     })
 }
 

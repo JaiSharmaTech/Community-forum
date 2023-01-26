@@ -4,3 +4,4 @@ test
 .env
 git.sh
 typescript
+yarn.lock

@@ -99,6 +99,17 @@ app.get('/getAnswers/:questionId', async (req, res) => {
     }
     res.send(rep);
 })
+app.get('/getComments/:answerId', async (req, res) => {
+    const { answerId } = req.params;
+    let rep;
+    try {
+        const answer = await ANSWER.find({ _id: answerId });
+        rep = new jsonData(true, answer[0].comments);
+    } catch (error) {
+        rep = new jsonData(false, { error })
+    }
+    res.send(rep)
+})
 
 app.get("/me", authUser, (req, res) => {
     console.log(req.user)
@@ -292,11 +303,13 @@ app.post("/comment", authUser, async (req, res) => {
     try {
         const { comment, answerId } = req.body;
         const answer = await ANSWER.find({ _id: answerId })
-        await ANSWER.updateOne({_id: answerId},{
-            $set:{comments:answer[0].comments.concat({
-                user:req.user.name,
-                text:comment
-            })}
+        await ANSWER.updateOne({ _id: answerId }, {
+            $set: {
+                comments: answer[0].comments.concat({
+                    user: req.user.name,
+                    text: comment
+                })
+            }
         })
         rep = new responseData(true, "Commented")
     } catch (err) {
